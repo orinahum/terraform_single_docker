@@ -8,6 +8,7 @@ resource "docker_container" "nginx" {
     internal = var.nginx_int_port
     external = var.nginx_ext_port
   }
+
   # volumes {
   #   host_path = "${path.module}/default.conf.tpl"
   #   container_path = "etc/nginx/default.conf"

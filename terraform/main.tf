@@ -20,4 +20,7 @@ resource "docker_network" "app_network" {
   name = "app_network"
 }
 
-
+resource "local_file" "creating_inventory" {
+  content = module.nginx.nginx_ip
+  filename = "nginx_ip.txt"
+}

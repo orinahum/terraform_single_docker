@@ -3,26 +3,42 @@
 
 -
   # Hosts: lists of target hosts that we'll run playbooks on
-  hosts: db
-  user: root
-  vars:
-    motd: 'Welcome to DB Server again !- Deployed by Avishay'
-  # Vars: variables that apply to the play on all target systems
+  hosts: all
+
   # Tasks: list of tasks that will be executed  within play, including pre and post tasks
   tasks:
-    - name: Configure a MOTD (Message Of The Way) on DB server
+    - name: Copy nginx configuration file to /etc/nginx folder
       copy:
-        content: "{{ motd }}"
-        dest: /tmp/motd
-      notify: Configure MOTD on DB servers
+        src: files/nginx.conf
+        dest: /etc/nginx/nginx.conf
+      notify: "copy_nginx"
+
+    - name: Copy SSL key to the same folder for reference
+      copy:
+        src: files/server.key
+        dest: /etc/nginx/server.key
+      notify: "copy_key"
+
+    - name: Copy SSL certificate to the same folder for reference
+      copy:
+        src: files/server.crt
+        dest: /etc/nginx/server.crt
+      notify: "copy_certificate"
+    
+    - name: restart nginx
+      service: name=nginx state=restarted enabled=yes
+
 
   # Handlers: list of handlers (notification tasks) that are executed with `notify` keyword from `tasks`
   handlers:
-    - name: Configure MOTD on DB servers
+    - name: copy_nginx
       debug:
-        msg: "Worked fine!"
-  # Roles: list of roles (dedicated tasks ) to be imported  into the play
-  
-  # Note: not all are required to be used in single playbook
+        msg: "[+] Configuration file successfully copied to /etc/nginx folder"
+    - name: copy_key
+      debug:
+        msg: "[+] SSL key successfully copied to /etc/nginx folder"
+    - name: copy_certificate
+      debug:
+        msg: "[+] SSL certificate successfully copied to /etc/nginx folder"
 
 ...

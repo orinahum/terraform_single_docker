@@ -4,6 +4,11 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+## nginx_ip and inventory.ini files is created by the bash script or terraform, no need to keep in GIT
+*nginx_ip.txt*
+*inventory.ini*
+
+
 
 # Crash log files
 crash.log
@@ -37,7 +42,7 @@ override.tf.json
 terraform.rc
 
 # ignore mac hidden folder
-.DS_Store
+*.DS_Store*
 
 # ignore vscode hidden folder
 .vscode*
