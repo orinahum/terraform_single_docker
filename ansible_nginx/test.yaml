@@ -1,0 +1,24 @@
+#x# The  minus in YAML this indicates a list item. the playbook contains a list of plays,
+# with each play being a dictionary
+-
+  # Hosts: lists of target hosts that we'll run playbooks on
+  hosts: local
+  # Tasks: list of tasks that will be executed  within play, including pre and post tasks
+  tasks:
+    - name: Copy nginx configuration and ssl files to /etc/nginx folder, and restarting nginx container
+      shell: |
+        docker cp nginx_files/nginx.conf nginx:/etc/nginx/nginx.conf
+        docker cp nginx_files/server.key nginx:/etc/nginx/server.key
+        docker cp nginx_files/server.crt nginx:/etc/nginx/server.crt
+        docker restart nginx
+      notify: "copy_nginx"
+
+
+  # Handlers: list of handlers (notification tasks) that are executed with `notify` keyword from `tasks`
+  handlers:
+    - name: copy_nginx
+      debug:
+        msg: "[+] Configuration files successfully copied to /etc/nginx folder"
+
+
+...

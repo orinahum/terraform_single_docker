@@ -3,42 +3,51 @@
 
 -
   # Hosts: lists of target hosts that we'll run playbooks on
-  hosts: all
-
+  hosts: localhost
+  collections:
+    - community.docker
   # Tasks: list of tasks that will be executed  within play, including pre and post tasks
   tasks:
     - name: Copy nginx configuration file to /etc/nginx folder
-      copy:
-        src: files/nginx.conf
-        dest: /etc/nginx/nginx.conf
+      shell: |
+        docker cp files/nginx.conf nginx:/etc/nginx/nginx.conf
+        docker cp files/server.key nginx:/etc/nginx/server.key
+        docker cp files/server.crt nginx:/etc/nginx/server.crt
+        docker restart nginx
       notify: "copy_nginx"
 
-    - name: Copy SSL key to the same folder for reference
-      copy:
-        src: files/server.key
-        dest: /etc/nginx/server.key
-      notify: "copy_key"
+    # - name: Copy SSL key to the same folder for reference
+    #   community.docker.docker_container_copy_into:
+    #     container: nginx
+    #     path: files/server.key
+    #     container_path: /etc/nginx/server.key
+    #   notify: "copy_key"
 
-    - name: Copy SSL certificate to the same folder for reference
-      copy:
-        src: files/server.crt
-        dest: /etc/nginx/server.crt
-      notify: "copy_certificate"
+    # - name: Copy SSL certificate to the same folder for reference
+    #   community.docker.docker_container_copy_into:
+    #     container: nginx
+    #     path: files/server.crt
+    #     container_path: /etc/nginx/server.crt
+    #   notify: "copy_certificate"
     
-    - name: restart nginx
-      service: name=nginx state=restarted enabled=yes
+    # - name: restart nginx
+    #   service: name=nginx state=restarted enabled=yes
 
 
   # Handlers: list of handlers (notification tasks) that are executed with `notify` keyword from `tasks`
   handlers:
     - name: copy_nginx
       debug:
-        msg: "[+] Configuration file successfully copied to /etc/nginx folder"
-    - name: copy_key
-      debug:
-        msg: "[+] SSL key successfully copied to /etc/nginx folder"
-    - name: copy_certificate
-      debug:
-        msg: "[+] SSL certificate successfully copied to /etc/nginx folder"
+        msg: "[+] Configuration files successfully copied to /etc/nginx folder"
+    # - name: copy_key
+    #   debug:
+    #     msg: "[+] SSL key successfully copied to /etc/nginx folder"
+    # - name: copy_certificate
+    #   debug:
+    #     msg: "[+] SSL certificate successfully copied to /etc/nginx folder"
+
+
+
+
 
 ...
