@@ -12,8 +12,8 @@ Before proceeding with the setup, make sure you have the following installed on 
 
 1. **Clone the repository and navigate into the project directory**:
    ```bash
-   git clone <repo-url>
-   cd <repo-directory>
+   git clone https://github.com/orinahum/terraform_single_docker.git
+   cd terraform_single_docker
    ```
 
 2. **Initialize Terraform**:

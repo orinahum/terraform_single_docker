@@ -10,7 +10,7 @@ resource "docker_container" "nginx" {
   }
   volumes {
     host_path = "${path.module}/default.conf.tpl"
-    container_path = "etc/nginx/nginx.com"
+    container_path = "etc/nginx/default.conf"
   }
   volumes {
     host_path = "./ssl/server.crt"
