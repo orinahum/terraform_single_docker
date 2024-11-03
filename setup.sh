@@ -29,7 +29,7 @@ sleep 1
 terraform -chdir=terraform/ apply -auto-approve
 
 ## Copying nginx configuration files into docker
-docker cp nginx_files/nginx.conf nginx:/etc/nginx/nginx.conf
+docker cp nginx_files/nginx.conf nginx:/etc/nginx/default.conf
 docker cp nginx_files/server.key nginx:/etc/nginx/server.key
 docker cp nginx_files/server.crt nginx:/etc/nginx/server.crt
 
