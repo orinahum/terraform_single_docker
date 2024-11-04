@@ -1,3 +1,5 @@
+<img src="assets/TASK.png" alt="TASK.md" style="width: 100%; height: 250px;">
+
 # Terraform Single file docker task
 
 Create terraform project file that will start multi container environment with nginx as loadbalancer and ssl configuration to be implemented.

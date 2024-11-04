@@ -4,11 +4,10 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+*terraform/terraform_apply_output.log*
 ## nginx_ip and inventory.ini files is created by the bash script or terraform, no need to keep in GIT
 *nginx_ip.txt*
 *inventory.ini*
-
-
 
 # Crash log files
 crash.log

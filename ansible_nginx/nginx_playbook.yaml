@@ -35,7 +35,7 @@
   handlers:
     - name: copy_nginx
       debug:
-        msg: "[+] Configuration files successfully copied to /etc/nginx folder"
+        msg: "[+] Configuration files successfully copied to /etc/nginx folder and nginx docker was restarted"
     # - name: copy_key
     #   debug:
     #     msg: "[+] SSL key successfully copied to /etc/nginx folder"
