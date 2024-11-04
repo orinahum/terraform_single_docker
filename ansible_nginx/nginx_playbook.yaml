@@ -1,6 +1,3 @@
-#x# The  minus in YAML this indicates a list item. the playbook contains a list of plays,
-# with each play being a dictionary
-
 -
   # Hosts: lists of target hosts that we'll run playbooks on
   hosts: localhost
