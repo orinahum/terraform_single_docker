@@ -1,3 +1,7 @@
+<img src="assets/SSLGUID.png" alt="SSLGUID.md" style="width: 100%; height: 250px;">
+
+# 
+
 # Guide: Generating a Self-Signed SSL Certificate and Key
 
 To set up SSL for your NGINX server, you’ll need two files:

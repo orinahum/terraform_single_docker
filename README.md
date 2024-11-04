@@ -1,68 +1,98 @@
-# terraform_single_docker
-terraform project file that will start multi container environment with nginx as loadbalancer and ssl configuration to be implemented.
+<img src="assets/README.png" alt="README.md" style="width: 100%; height: 250px;">
 
-## README.md Overview
+# Terraform Single file docker
 
-The project includes a multi-container environment managed by Terraform and Docker. Below is an overview of the project structure and purpose:
-
-### Project Overview
-
-This project sets up a multi-container environment using Terraform and Docker. It includes:
+This project sets up a multi-container environment using Terraform, Docker, and Ansible. It includes:
 
 - **NGINX Load Balancer**: An NGINX container configured with SSL to act as a load balancer.
-- **App Container**: A simple application container that responds with "Hello World".
+- **App Container**: A simple application container that responds with web page.
+- **Ansible Automation**: Ansible is used to automate configurations and orchestrate the deployment process.
 
-- **a breakdown of how each file works together**
-
-1. `main.tf` – Main configuration file:
-
-    - Creates the NGINX and app containers.
-    - Uses docker_image to build the app container image from the app/Dockerfile.
-    - Configures NGINX to act as a load balancer and proxy for the app container over HTTPS.
-    - Generates a dynamic NGINX configuration with templatefile to incorporate the fake DNS name.
-    - Uses a null_resource with local-exec to add the NGINX container’s IP to /etc/hosts.
-
-2. `variables.tf` – Parameter definitions:
-    - Defines variables for container names, image names, ports, and paths, allowing easy customization without modifying main.tf directly.
-
-3. `output.tf` – Outputs:
-    - Shows IP addresses for the NGINX and app containers, making it easy to retrieve these values after deployment.
-
-4. `nginx/default.conf.tpl` – NGINX Configuration Template:
-    - Template file that uses ${fake_dns_name} for dynamic DNS entry substitution.
-    - Configures NGINX to forward requests on port 443 to the app container on port 80.
-
-5. `app/Dockerfile` and `app/index.html` – "Hello World" App:
-    - Dockerfile creates an NGINX-based image that serves the index.html file as a static HTML page.
-    - index.html contains the "Hello World" message.
-
-**How the Files Work Together**
-1. Build the App Image: main.tf uses the custom app/Dockerfile to build the app container image. The app container serves the index.html file, which contains "Hello World".
-
-2. NGINX as Load Balancer: The NGINX configuration (default.conf.tpl) uses Terraform’s templatefile function to insert the fake DNS name and forward HTTPS requests to the app container.
-
-3. Access the App: Once deployed, you can access https://example.local (or your configured DNS) to see the "Hello World" message served by the app container through NGINX with SSL enabled.
-
-### Project Structure
+## Project Structure
 
 ```
 .
-├── main.tf              # Main Terraform configuration file for setting up Docker containers
-├── variables.tf         # Variable definitions for customizing container properties
-├── output.tf            # Outputs to retrieve useful information (e.g., IP addresses)
-├── nginx                # Directory for NGINX configuration and SSL certificates
-│   ├── default.conf.tpl # NGINX config template for dynamic DNS and SSL settings
-│   └── ssl              # SSL certificate storage
-│       ├── server.crt   # Self-signed SSL certificate for HTTPS
-│       └── server.key   # SSL certificate key
-└── app                  # App directory for "Hello World" app setup
-    ├── Dockerfile       # Dockerfile for building a simple "Hello World" app image
-    └── index.html       # HTML file containing the "Hello World" message
+├── INSTALLATION.md                # Guide to installing and setting up the project
+├── LICENSE                        # License file for the project
+├── README.md                      # Project overview and usage guide
+├── SSLGUID.md                     # SSL certificate configuration guide
+├── TASK.md                        # Task description and details
+├── assets                         # Directory containing image files used in the project
+│   ├── CONTRIBUTERS.png           # Image showing contributors or contributors' information
+│   ├── INSTALLATION.png           # Image providing installation instructions or steps
+│   ├── README.png                 # Image related to the README documentation
+│   ├── SSLGUID.png                # Image with guidelines or information on SSL setup
+│   └── TASK.png                   # Image depicting tasks or task-related instructions
+├── ansible_nginx                  # Ansible playbooks and configurations for NGINX
+│   ├── ansible.cfg                # Ansible configuration file
+│   ├── files                      # Files for NGINX configuration
+│   │   ├── nginx.conf             # NGINX configuration file
+│   │   ├── server.crt             # SSL certificate for NGINX
+│   │   └── server.key             # SSL certificate key for NGINX
+│   └── nginx_playbook.yaml        # Ansible playbook for NGINX configuration
+├── nginx_files                    # NGINX configuration and SSL certificates
+│   ├── nginx.conf                 # NGINX configuration file
+│   ├── server.crt                 # SSL certificate for NGINX
+│   └── server.key                 # SSL certificate key for NGINX
+├── setup.sh                       # Main script for deploying or destroying the infrastructure
+├── terraform                      # Terraform configurations for the infrastructure
+│   ├── main.tf                    # Main Terraform configuration file
+│   ├── modules                    # Terraform modules for different components
+│   │   ├── app                    # Module for the application container
+│   │   │   ├── main.tf            # Terraform configuration for the app module
+│   │   │   ├── output.tf          # Outputs for the app module
+│   │   │   ├── provider.tf        # Provider configuration for the app module
+│   │   │   └── variables.tf       # Variables for the app module
+│   │   └── nginx                  # Module for the NGINX container
+│   │       ├── main.tf            # Terraform configuration for the NGINX module
+│   │       ├── output.tf          # Outputs for the NGINX module
+│   │       ├── provider.tf        # Provider configuration for the NGINX module
+│   │       └── variables.tf       # Variables for the NGINX module
+│   ├── output.tf                  # Outputs for the main Terraform configuration
+│   ├── provider.tf                # Provider configuration for the main setup
+│   └── variables.tf               # Variables for the main Terraform setup
 ```
+
+## Branch Information
+
+In this project, there is an additional branch called **app** that contains the `appweb` application. You can view it [here](https://github.com/orinahum/terraform_single_docker/tree/app).
+
+## Installation
+
+To install and deploy the project, please follow the instructions in the [INSTALLATION.md](INSTALLATION.md) file.
+
+## Dependencies
+
+- **Docker**: Required to run the application containers. [Docker Installation Guide](https://docs.docker.com/get-docker/)
+- **Terraform**: Required to manage the infrastructure as code. [Terraform Installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- **Ansible**: Required for configuration management and automation. [Ansible Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- **Git**: Required to clone the repository. [Git Installation Guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ## Usage
 
-1. **Modify variables**: Adjust parameters like DNS name, port, and image names by modifying `variables.tf`.
-2. **Deploy the project**: Follow the steps in `INSTALLATION.md` to deploy the environment.
-3. **Access the application**: Once deployed, access the app using the fake DNS specified in `variables.tf`.
+1. **Modify Variables**: Adjust parameters like DNS name, port, and image names by modifying `variables.tf`.
+2. **Deploy the Project**: Follow the steps in [INSTALLATION.md](INSTALLATION.md) to deploy the environment.
+3. **Access the Application**: Once deployed, access the app using the configured DNS name.
 
+## Uninstall
+
+To uninstall and destroy all infrastructure, run:
+
+```bash
+./setup.sh --uninstall
+```
+
+This command will remove all resources created by the installation process.
+
+## License
+
+This project is licensed under the Unlicense. See the [LICENSE](LICENSE) file for details.
+
+## Related Documents
+
+- [Installation Guide (INSTALLATION.md)](INSTALLATION.md)
+- [SSL Guide (SSLGUID.md)](SSLGUID.md)
+
+## Acknowledgments
+
+Special thanks to the [CONTRIBUTORS](CONTRIBUTORS.md) of this project.
