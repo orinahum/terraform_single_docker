@@ -77,4 +77,4 @@ This command will safely remove all resources that were previously deployed.
 ## Related Documents
 
 - [Project Overview (README.md)](README.md)
-- [SSL Guide (SSLGUID.md)](nginx_files/ssl/SSLGUID.md)
+- [SSL Guide (SSLGUID.md)](SSLGUID.md)
