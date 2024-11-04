@@ -26,22 +26,18 @@ printf "
 ╚═╝╚═╝  ╚═══╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝                                                                                                               
 "
 
-## Check for dependencies
 # Starting prerequisite checks
 echo "Starting prerequisite checks..."
 sleep 1
 
-## Checking if Terraform exists
 # Verify if Terraform is installed
 ( which terraform &> /dev/null && echo "[+] Terraform is available" ) || \
     ( echo "[-] Terraform executables not found, exiting" && exit 1 )
 
-## Checking if Docker exists
 # Verify if Docker is installed
 ( which docker &> /dev/null && echo "[+] Docker is available" ) || \
     ( echo "[-] Docker executables not found, exiting" && exit 1 )
 
-## Checking if Ansible Playbook is available
 # Verify if Ansible Playbook is installed
 ( which ansible-playbook &> /dev/null && echo "[+] Ansible-Playbook is available" ) || \
     ( echo "[-] Ansible Playbook not found, exiting" && exit 2 )
@@ -59,10 +55,9 @@ if [[ "$1" == "--uninstall" ]]; then
   exit 0
 fi
 
-## Running Terraform apply
 # Apply Terraform configuration in the terraform folder and output the plan to a log file
 terraform -chdir=terraform/ apply -auto-approve | tee terraform/terraform_apply_output.log
 
-## Running Ansible playbook
+
 # Run the Ansible playbook to modify NGINX configuration
 ansible-playbook ansible_nginx/nginx_playbook.yaml
