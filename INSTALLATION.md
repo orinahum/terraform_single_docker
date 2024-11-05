@@ -2,8 +2,9 @@
 
 ## Prerequisites
 
-Before setting up the project, ensure you have the following tools installed:
+Before setting up the project, ensure you have the following dependencies:
 
+- **Sudo**: require passwordless sudo permission for the ansible playbook [How to Guide](https://www.simplified.guide/linux/enable-passwordless-sudo#:~:text=Steps%20to%20enable%20passwordless%20sudo%20access%3A%201%20Open,to%20confirm%20that%20no%20password%20is%20required.%20)
 - **Docker**: Install Docker to run containers. [Docker Installation Guide](https://docs.docker.com/get-docker/)
 - **Terraform**: Install Terraform to configure infrastructure. [Terraform Installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - **Ansible**: Install Ansible for configuration management and automation. [Ansible Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)

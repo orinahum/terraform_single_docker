@@ -17,6 +17,7 @@ This project sets up a multi-container environment using Terraform, Docker, and 
 ├── README.md                      # Project overview and usage guide
 ├── SSLGUID.md                     # SSL certificate configuration guide
 ├── TASK.md                        # Task description and details
+├── setup.sh                       # Main script for deploying or destroying the infrastructure
 ├── assets                         # Directory containing image files used in the project
 │   ├── CONTRIBUTERS.png           # Image showing contributors or contributors' information
 │   ├── INSTALLATION.png           # Image providing installation instructions or steps
@@ -30,11 +31,6 @@ This project sets up a multi-container environment using Terraform, Docker, and 
 │   │   ├── server.crt             # SSL certificate for NGINX
 │   │   └── server.key             # SSL certificate key for NGINX
 │   └── nginx_playbook.yaml        # Ansible playbook for NGINX configuration
-├── nginx_files                    # NGINX configuration and SSL certificates
-│   ├── nginx.conf                 # NGINX configuration file
-│   ├── server.crt                 # SSL certificate for NGINX
-│   └── server.key                 # SSL certificate key for NGINX
-├── setup.sh                       # Main script for deploying or destroying the infrastructure
 ├── terraform                      # Terraform configurations for the infrastructure
 │   ├── main.tf                    # Main Terraform configuration file
 │   ├── modules                    # Terraform modules for different components
