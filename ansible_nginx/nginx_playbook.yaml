@@ -5,46 +5,51 @@
     - community.docker
   # Tasks: list of tasks that will be executed  within play, including pre and post tasks
   tasks:
-    - name: Copy nginx configuration file to /etc/nginx folder
-      shell: |
-        docker cp files/nginx.conf nginx:/etc/nginx/nginx.conf
-        docker cp files/server.key nginx:/etc/nginx/server.key
-        docker cp files/server.crt nginx:/etc/nginx/server.crt
-        docker restart nginx
-      notify: "copy_nginx"
+    - name: Copy nginx files in a block
+      block:
+      - name: Copy nginx configuration
+        community.docker.docker_container_copy_into:
+          container: nginx
+          path: files/nginx.conf
+          container_path: /etc/nginx/nginx.conf
+        become: true
 
-    # - name: Copy SSL key to the same folder for reference
-    #   community.docker.docker_container_copy_into:
-    #     container: nginx
-    #     path: files/server.key
-    #     container_path: /etc/nginx/server.key
-    #   notify: "copy_key"
+      - name: Copy ssl key
+        community.docker.docker_container_copy_into:
+          container: nginx
+          path: files/server.key
+          container_path: /etc/nginx/server.key
+        become: true
 
-    # - name: Copy SSL certificate to the same folder for reference
-    #   community.docker.docker_container_copy_into:
-    #     container: nginx
-    #     path: files/server.crt
-    #     container_path: /etc/nginx/server.crt
-    #   notify: "copy_certificate"
-    
-    # - name: restart nginx
-    #   service: name=nginx state=restarted enabled=yes
+      - name: Copy ssl crt
+        community.docker.docker_container_copy_into:
+          container: nginx
+          path: files/server.crt
+          container_path: /etc/nginx/server.crt
+        become: true
+      notify: copy_nginx
 
+    # Gathers info on the nginx container, and restart it back to the same state (After the files change)
+    - name: Get container information
+      community.docker.docker_container_info:
+        name: nginx
+      register: container_info
 
-  # Handlers: list of handlers (notification tasks) that are executed with `notify` keyword from `tasks`
+    - name: Restart the container
+      community.docker.docker_container:
+        name: nginx
+        state: started
+        restart: true
+
+    # Adds fake DNS to localhost
+    - name: add localhost DNS name
+      become: true
+      lineinfile:
+        search_string: 'hello_alex'
+        path: /etc/hosts
+        line: '127.0.0.1       www.hello_alex.com'
   handlers:
     - name: copy_nginx
       debug:
-        msg: "[+] Configuration files successfully copied to /etc/nginx folder and nginx docker was restarted"
-    # - name: copy_key
-    #   debug:
-    #     msg: "[+] SSL key successfully copied to /etc/nginx folder"
-    # - name: copy_certificate
-    #   debug:
-    #     msg: "[+] SSL certificate successfully copied to /etc/nginx folder"
-
-
-
-
-
+        msg: "[+] Configuration files successfully copied to /etc/nginx folder"
 ...

@@ -13,7 +13,7 @@ variable "app_ext_port" {
 }
 variable "app_image_name" {
   description = "Name of the Image in use for app"
-  default     = "alayani/hello_world_app:stable"
+  default     = "alayani/hello_world_app:latest"
 }
 
 variable "nginx_container_name" {

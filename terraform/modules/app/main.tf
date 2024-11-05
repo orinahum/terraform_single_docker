@@ -4,9 +4,5 @@ resource "docker_container" "app" {
   networks_advanced {
     name = var.network_id
   }
-  # ports {
-  #   internal = var.app_int_port
-  #   external = var.app_ext_port
-  # }
 }
 
