@@ -1,68 +1,87 @@
-# terraform_single_docker
-terraform project file that will start multi container environment with nginx as loadbalancer and ssl configuration to be implemented.
+# README.md
 
-## README.md Overview
+## Project Overview
 
-The project includes a multi-container environment managed by Terraform and Docker. Below is an overview of the project structure and purpose:
+This is a Flask-based web application that features a background image and audio, creating a visually and audibly appealing experience for users. It also allows users to control the background music with a "Play Music" and "Stop Music" button. The application is configured to run with Poetry for dependency management, and includes a Dockerfile for containerized deployment.
 
-### Project Overview
+### Features
+- **Background Image**: Full-page background image to create an immersive experience.
+- **Background Audio**: Autoplay audio with a toggle button to play/stop the background music.
+- **Flask Framework**: Powered by Flask for easy setup and extensibility.
+- **Poetry**: Manages dependencies to ensure a reliable and reproducible environment.
+- **Docker Support**: Includes Docker configuration for easy deployment.
 
-This project sets up a multi-container environment using Terraform and Docker. It includes:
+## Technologies Used
+- **Python 3**
+- **Flask**
+- **Poetry** (for dependency management)
+- **Docker**
+- **Gunicorn** (as the WSGI server)
 
-- **NGINX Load Balancer**: An NGINX container configured with SSL to act as a load balancer.
-- **App Container**: A simple application container that responds with "Hello World".
-
-- **a breakdown of how each file works together**
-
-1. `main.tf` – Main configuration file:
-
-    - Creates the NGINX and app containers.
-    - Uses docker_image to build the app container image from the app/Dockerfile.
-    - Configures NGINX to act as a load balancer and proxy for the app container over HTTPS.
-    - Generates a dynamic NGINX configuration with templatefile to incorporate the fake DNS name.
-    - Uses a null_resource with local-exec to add the NGINX container’s IP to /etc/hosts.
-
-2. `variables.tf` – Parameter definitions:
-    - Defines variables for container names, image names, ports, and paths, allowing easy customization without modifying main.tf directly.
-
-3. `output.tf` – Outputs:
-    - Shows IP addresses for the NGINX and app containers, making it easy to retrieve these values after deployment.
-
-4. `nginx/default.conf.tpl` – NGINX Configuration Template:
-    - Template file that uses ${fake_dns_name} for dynamic DNS entry substitution.
-    - Configures NGINX to forward requests on port 443 to the app container on port 80.
-
-5. `app/Dockerfile` and `app/index.html` – "Hello World" App:
-    - Dockerfile creates an NGINX-based image that serves the index.html file as a static HTML page.
-    - index.html contains the "Hello World" message.
-
-**How the Files Work Together**
-1. Build the App Image: main.tf uses the custom app/Dockerfile to build the app container image. The app container serves the index.html file, which contains "Hello World".
-
-2. NGINX as Load Balancer: The NGINX configuration (default.conf.tpl) uses Terraform’s templatefile function to insert the fake DNS name and forward HTTPS requests to the app container.
-
-3. Access the App: Once deployed, you can access https://example.local (or your configured DNS) to see the "Hello World" message served by the app container through NGINX with SSL enabled.
-
-### Project Structure
-
+## Project Structure
 ```
-.
-├── main.tf              # Main Terraform configuration file for setting up Docker containers
-├── variables.tf         # Variable definitions for customizing container properties
-├── output.tf            # Outputs to retrieve useful information (e.g., IP addresses)
-├── nginx                # Directory for NGINX configuration and SSL certificates
-│   ├── default.conf.tpl # NGINX config template for dynamic DNS and SSL settings
-│   └── ssl              # SSL certificate storage
-│       ├── server.crt   # Self-signed SSL certificate for HTTPS
-│       └── server.key   # SSL certificate key
-└── app                  # App directory for "Hello World" app setup
-    ├── Dockerfile       # Dockerfile for building a simple "Hello World" app image
-    └── index.html       # HTML file containing the "Hello World" message
+project_root/
+├── app.py                # Main application file
+├── static                # Static directory for additional static files
+│   ├── index.html        # HTML file for the web app
+│   ├── background.jpg    # Background image for the web page
+│   └── background.mp3    # Background audio file
+├── Dockerfile            # Dockerfile for containerizing the app
+├── pyproject.toml        # Poetry configuration file
+├── INSTALLATION.md       # Project INSTALLATION
+├── poetry.lock           # Lockfile for dependency versions
+├── gunicorn_conf.py      # Gunicorn configuration file
+└── README.md             # Project README (this file)
 ```
+
+## Running the Project
+
+### Prerequisites
+- **Python 3.8+**
+- **Poetry** installed globally: [Poetry Installation Guide](https://python-poetry.org/docs/#installation)
+- **Docker** (optional, for containerized deployment)
+
+### Installation and Running
+1. **Clone the repository**:
+   ```sh
+   git clone <repository-url>
+   cd project_root
+   ```
+
+2. **Install dependencies using Poetry**:
+   ```sh
+   poetry install
+   ```
+
+3. **Activate the virtual environment**:
+   ```sh
+   poetry shell
+   ```
+
+4. **Run the Flask application**:
+   ```sh
+   python app.py
+   ```
+
+5. **Access the application**:
+   - Visit `http://127.0.0.1:8000` in your browser.
+
+### Running with Docker
+1. **Build the Docker image**:
+   ```sh
+   docker build -t flask-audio-app .
+   ```
+
+2. **Run the Docker container**:
+   ```sh
+   docker run -p 8000:8000 flask-audio-app
+   ```
 
 ## Usage
+When you open the application in your browser, you will see a full-screen image and hear the background music. You can click the "Stop Music" button to stop the audio or click "Play Music" to start it again.
 
-1. **Modify variables**: Adjust parameters like DNS name, port, and image names by modifying `variables.tf`.
-2. **Deploy the project**: Follow the steps in `INSTALLATION.md` to deploy the environment.
-3. **Access the application**: Once deployed, access the app using the fake DNS specified in `variables.tf`.
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Contributions
+Feel free to submit pull requests or open issues for suggestions, improvements, or bugs. Contributions are always welcome!

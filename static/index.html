@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World with Background Audio and Image</title>
+    <style>
+        /* Full-height background image */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/static/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        .content {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #ff6347;
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #ff4500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h1>Hello Alex!</h1>
+        <p>Welcome to our webpage, enjoy the music and the view!</p>
+        <button onclick="toggleAudio()">Play Music</button>
+    </div>
+
+    <!-- Background audio -->
+    <audio id="background-audio" loop>
+        <source src="/static/background.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        var audio = document.getElementById('background-audio');
+
+        // Set initial volume
+        window.onload = function() {
+            audio.volume = 1.0; // Set volume level between 0.0 and 1.0
+            try {
+                audio.play();
+            } catch (e) {
+                console.log("Autoplay failed, user interaction needed");
+            }
+        };
+
+        function toggleAudio() {
+            var button = document.querySelector('button');
+
+            if (audio.paused) {
+                audio.play();
+                button.textContent = 'Stop Music';
+            } else {
+                audio.pause();
+                button.textContent = 'Play Music';
+            }
+        }
+    </script>
+</body>
+</html>
