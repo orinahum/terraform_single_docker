@@ -62,7 +62,7 @@ terraform -chdir=terraform/ init
 terraform -chdir=terraform/ apply -auto-approve | tee terraform/terraform_apply_output.log
 
 # Run the Ansible playbook to modify NGINX configuration
-ansible-playbook ansible_nginx/nginx_playbook.yaml
+ansible-playbook ansible_nginx/nginx_playbook.yaml --ask-become-pass
 
 # Opens the browser with the fake DNS name (Created in the Ansible Playbook)
 open http://www.hello_alex.com &> /dev/null
